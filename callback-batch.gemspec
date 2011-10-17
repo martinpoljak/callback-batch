@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
     "README.md",
     "Rakefile",
     "VERSION",
+    "callback-batch.gemspec",
     "lib/callback-batch.rb",
     "test"
   ]
