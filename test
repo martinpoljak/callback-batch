@@ -1,0 +1,41 @@
+#!/usr/bin/ruby
+# encoding: utf-8
+# (c) 2011 Martin Kozák (martinkozak@martinkozak.net)
+
+$:.push("./lib")
+$:.unshift("./lib")
+
+require "callback-batch"
+require "riot"
+
+class Foo
+    def b1(&block)
+        yield :b1
+    end
+    def b2(&block)
+        yield :b2
+    end
+end
+
+context "CallbackBatch" do
+    asserts("#execute") do
+        q = CallbackBatch::new
+        f = Foo::new
+        q.take(f).b1
+        q.take(f).b2
+        q.execute!
+        
+        q.results == [:b1, :b2]
+    end
+end
+
+context "CallbackSequence" do
+    asserts("#execute") do
+        q = CallbackSequencer::new(Foo::new)
+        q.b1
+        q.b2
+        q.execute!
+        
+        q.results = [:b1, :b2]
+    end
+end
